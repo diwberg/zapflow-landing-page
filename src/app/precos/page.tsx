@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
+import Link from 'next/link';
 import { 
   Check, 
   Plus, 
@@ -17,11 +18,29 @@ import {
   ShoppingBag, 
   Linkedin, 
   Mail, 
-  MessageSquare 
+  MessageSquare,
+  ExternalLink
 } from 'lucide-react';
 import { useDemoModalStore } from '@/store/useDemoModalStore';
 import { ANALYTICS_EVENTS } from '@/lib/analytics';
 import useAnalytics from '@/hooks/useAnalytics';
+
+// Define o tipo para um plano
+interface PricingPlan {
+  name: string;
+  color: string;
+  bgColor: string;
+  borderColor: string;
+  lightBg: string;
+  price: string;
+  billing: string;
+  description: string;
+  features: string[];
+  extraInfo?: { icon: string; text: string; }[];
+  idealFor?: string;
+  cta: string;
+  popular: boolean;
+}
 
 const pricingPlans = [
   {
@@ -30,7 +49,7 @@ const pricingPlans = [
     bgColor: 'bg-green-500',
     borderColor: 'border-green-500',
     lightBg: 'bg-green-50 dark:bg-green-950/20',
-    price: 'R$ 199',
+    price: 'R$ 99',
     billing: '/mês',
     description: 'Para quem está estruturando o atendimento digital com qualidade e baixo custo.',
     features: [
@@ -53,7 +72,7 @@ const pricingPlans = [
     bgColor: 'bg-blue-500',
     borderColor: 'border-blue-500',
     lightBg: 'bg-blue-50 dark:bg-blue-950/20',
-    price: 'R$ 599',
+    price: 'R$ 299',
     billing: '/mês',
     description: 'Para equipes que atuam em vários canais e precisam de automação e visibilidade.',
     features: [
@@ -108,6 +127,10 @@ const availableChannels = [
   { name: 'Webchat', icon: MessageSquare, color: 'text-teal-500' }
 ];
 
+// Links dos planos a partir das variáveis de ambiente
+const PRICE_START_LINK = process.env.NEXT_PUBLIC_PRICE_START_LINK || '#';
+const PRICE_PRO_LINK = process.env.NEXT_PUBLIC_PRICE_PRO_LINK || '#';
+
 const PricingSection = () => {
   const { openModal } = useDemoModalStore();
   const { trackEvent } = useAnalytics();
@@ -118,8 +141,8 @@ const PricingSection = () => {
     trackEvent(ANALYTICS_EVENTS.PRICING_PAGE_VIEW);
   }, [trackEvent]);
 
-  // Handle the purchase button click
-  const handlePurchaseClick = (planName: string, planPrice: string) => {
+  // Handle purchase click for direct links (planos Start e Pro)
+  const handleDirectPurchaseClick = (planName: string, planPrice: string) => {
     // Track the purchase intent with the plan name
     trackEvent({
       action: 'purchase_click',
@@ -130,17 +153,53 @@ const PricingSection = () => {
       currency: 'BRL'
     });
     
-    // If the plan is Enterprise, track that specific event
-    if (planName === 'Enterprise') {
-      trackEvent({
-        action: 'enterprise_plan_click',
-        category: 'Conversion',
-        label: 'Enterprise Plan Selected'
-      });
+    // O redirecionamento será feito pelo próprio link, não precisamos fazer nada aqui
+  };
+
+  // Handle Enterprise plan click (abre o modal)
+  const handleEnterprisePlanClick = (planName: string) => {
+    // Track the enterprise plan click
+    trackEvent({
+      action: 'enterprise_plan_click',
+      category: 'Conversion',
+      label: 'Enterprise Plan Selected'
+    });
+    
+    // Open the modal for enterprise plan
+    openModal(planName);
+  };
+  
+  // Renderiza o botão apropriado para cada plano
+  const renderPlanButton = (plan: PricingPlan) => {
+    // Para o plano Enterprise, use o modal
+    if (plan.name === 'Enterprise') {
+      return (
+        <Button
+          className="w-full"
+          variant="default"
+          onClick={() => handleEnterprisePlanClick(plan.name)}
+        >
+          {plan.cta}
+        </Button>
+      );
     }
     
-    // Open the modal
-    openModal(planName);
+    // Para os planos Start e Pro, use links diretos
+    const planLink = plan.name === 'Start' ? PRICE_START_LINK : PRICE_PRO_LINK;
+    
+    return (
+      <Button
+        asChild
+        className="w-full"
+        variant={plan.name === "Pro" ? "zapflowPrimary" : "outline"}
+        onClick={() => handleDirectPurchaseClick(plan.name, plan.price)}
+      >
+        <Link href={planLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center justify-center">
+          {plan.cta}
+          <ExternalLink className="ml-2 h-4 w-4" />
+        </Link>
+      </Button>
+    );
   };
 
   const fadeInUpVariants = {
@@ -236,13 +295,7 @@ const PricingSection = () => {
                   </p>
                 )}
                 
-                <Button
-                  className="w-full"
-                  variant={plan.name === "Pro" ? "zapflowPrimary" : plan.name === "Enterprise" ? "default" : "outline"}
-                  onClick={() => handlePurchaseClick(plan.name, plan.price)}
-                >
-                  {plan.cta}
-                </Button>
+                {renderPlanButton(plan)}
               </motion.div>
             ))}
           </div>
@@ -287,7 +340,7 @@ const PricingSection = () => {
             <Button 
               variant="zapflowPrimary"
               size="lg"
-              onClick={() => handlePurchaseClick("Consultoria", "Personalizado")}
+              onClick={() => handleEnterprisePlanClick("Consultoria")}
             >
               Agendar demonstração
             </Button>

@@ -68,7 +68,7 @@ const Benefits = () => {
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-[#25D366]/10 mb-4">
                   {benefit.icon}
                 </div>
-                <CardTitle className="text-xl">{benefit.title}</CardTitle>
+                <CardTitle className="text-xl dark:text-gray-300">{benefit.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-gray-600">{benefit.description}</p>
