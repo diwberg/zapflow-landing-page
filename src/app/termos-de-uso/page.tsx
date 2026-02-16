@@ -9,7 +9,7 @@ const TermsOfService = () => {
     <>
       <Header />
       <main className="pt-28 pb-16 px-4">
-        <motion.div 
+        <motion.div
           className="container mx-auto max-w-4xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -18,7 +18,7 @@ const TermsOfService = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 dark:text-white">
             Termos de Uso
           </h1>
-          
+
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p>
               Última atualização: 01 de Julho de 2023
@@ -26,7 +26,7 @@ const TermsOfService = () => {
 
             <h2>1. Aceitação dos Termos</h2>
             <p>
-              Bem-vindo ao Zapflow Atendimento. Estes Termos de Uso regem seu acesso e uso do site Zapflow.com.br e do serviço de atendimento omnichannel Zapflow Atendimento (coletivamente, o "Serviço"). Ao acessar ou usar o Serviço, você concorda em ficar vinculado a estes Termos de Uso.
+              Bem-vindo ao Zapflow Atendimento. Estes Termos de Uso regem seu acesso e uso do site Zapflow.com.br e do serviço de atendimento omnichannel Zapflow Atendimento (coletivamente, o &quot;Serviço&quot;). Ao acessar ou usar o Serviço, você concorda em ficar vinculado a estes Termos de Uso.
             </p>
 
             <h2>2. Descrição do Serviço</h2>

@@ -1,23 +1,23 @@
 "use client";
 
-import { useEffect } from 'react';
+import { useEffect, Suspense } from 'react';
 import { motion } from 'framer-motion';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
-import { 
-  Check, 
-  Plus, 
-  MessageCircle, 
-  Instagram as InstagramIcon, 
-  Facebook as FacebookIcon, 
-  Youtube, 
-  ShoppingCart, 
-  Send, 
-  ShoppingBag, 
-  Linkedin, 
-  Mail, 
+import {
+  Check,
+  Plus,
+  MessageCircle,
+  Instagram as InstagramIcon,
+  Facebook as FacebookIcon,
+  Youtube,
+  ShoppingCart,
+  Send,
+  ShoppingBag,
+  Linkedin,
+  Mail,
   MessageSquare,
   ExternalLink
 } from 'lucide-react';
@@ -131,7 +131,7 @@ const availableChannels = [
 const PRICE_START_LINK = process.env.NEXT_PUBLIC_PRICE_START_LINK || '#';
 const PRICE_PRO_LINK = process.env.NEXT_PUBLIC_PRICE_PRO_LINK || '#';
 
-const PricingSection = () => {
+const PricingContent = () => {
   const { openModal } = useDemoModalStore();
   const { trackEvent } = useAnalytics();
 
@@ -152,7 +152,7 @@ const PricingSection = () => {
       plan_price: planPrice,
       currency: 'BRL'
     });
-    
+
     // O redirecionamento será feito pelo próprio link, não precisamos fazer nada aqui
   };
 
@@ -164,11 +164,11 @@ const PricingSection = () => {
       category: 'Conversion',
       label: 'Enterprise Plan Selected'
     });
-    
+
     // Open the modal for enterprise plan
     openModal(planName);
   };
-  
+
   // Renderiza o botão apropriado para cada plano
   const renderPlanButton = (plan: PricingPlan) => {
     // Para o plano Enterprise, use o modal
@@ -183,10 +183,10 @@ const PricingSection = () => {
         </Button>
       );
     }
-    
+
     // Para os planos Start e Pro, use links diretos
     const planLink = plan.name === 'Start' ? PRICE_START_LINK : PRICE_PRO_LINK;
-    
+
     return (
       <Button
         asChild
@@ -204,8 +204,8 @@ const PricingSection = () => {
 
   const fadeInUpVariants = {
     hidden: { opacity: 0, y: 20 },
-    visible: { 
-      opacity: 1, 
+    visible: {
+      opacity: 1,
       y: 0,
       transition: { duration: 0.5 }
     }
@@ -215,7 +215,7 @@ const PricingSection = () => {
     <>
       <Header />
       <main className="pt-28 pb-16 px-4">
-        <motion.div 
+        <motion.div
           className="container mx-auto max-w-6xl"
           initial="hidden"
           animate="visible"
@@ -226,7 +226,7 @@ const PricingSection = () => {
               Planos feitos para escalar seu atendimento
             </h1>
             <p className="text-lg text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              Com o Zapflow, você começa pequeno, cresce com segurança e conta com uma plataforma que 
+              Com o Zapflow, você começa pequeno, cresce com segurança e conta com uma plataforma que
               acompanha a complexidade da sua operação — com suporte, inteligência e governança desde o primeiro dia.
             </p>
           </div>
@@ -235,11 +235,10 @@ const PricingSection = () => {
             {pricingPlans.map((plan, index) => (
               <motion.div
                 key={plan.name}
-                className={`relative rounded-xl border ${
-                  plan.popular 
-                    ? `${plan.borderColor} shadow-lg` 
-                    : 'border-gray-200 dark:border-gray-700'
-                } bg-white dark:bg-gray-800 p-6 transition-all hover:shadow-md`}
+                className={`relative rounded-xl border ${plan.popular
+                  ? `${plan.borderColor} shadow-lg`
+                  : 'border-gray-200 dark:border-gray-700'
+                  } bg-white dark:bg-gray-800 p-6 transition-all hover:shadow-md`}
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
@@ -249,7 +248,7 @@ const PricingSection = () => {
                     Mais popular
                   </span>
                 )}
-                
+
                 <div className="mb-6">
                   <div className={`inline-flex items-center mb-3 ${plan.color}`}>
                     <div className={`w-3 h-3 rounded-full ${plan.bgColor} mr-2`}></div>
@@ -257,7 +256,7 @@ const PricingSection = () => {
                       Plano {plan.name}
                     </h3>
                   </div>
-                  
+
                   <div className="mt-2">
                     <span className="text-3xl font-bold text-gray-900 dark:text-white">
                       {plan.price}
@@ -270,7 +269,7 @@ const PricingSection = () => {
                     {plan.description}
                   </p>
                 </div>
-                
+
                 <div className={`p-4 rounded-lg ${plan.lightBg} mb-5`}>
                   <ul className="space-y-3">
                     {plan.features.map((feature) => (
@@ -279,7 +278,7 @@ const PricingSection = () => {
                         <span className="text-gray-700 dark:text-gray-300">{feature}</span>
                       </li>
                     ))}
-                    
+
                     {plan.extraInfo && plan.extraInfo.map((info, i) => (
                       <li key={`extra-${i}`} className="flex items-start mt-2 pt-2 border-t border-gray-200 dark:border-gray-700">
                         <Plus className="h-5 w-5 text-gray-500 mr-2 flex-shrink-0" />
@@ -288,18 +287,18 @@ const PricingSection = () => {
                     ))}
                   </ul>
                 </div>
-                
+
                 {plan.idealFor && (
                   <p className="text-sm text-gray-600 dark:text-gray-400 italic mb-6">
                     💡 {plan.idealFor}
                   </p>
                 )}
-                
+
                 {renderPlanButton(plan)}
               </motion.div>
             ))}
           </div>
-          
+
           <div className="bg-gray-50 dark:bg-gray-800/30 p-6 rounded-xl border border-gray-200 dark:border-gray-700 mb-12">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               🌐 Canais disponíveis:
@@ -308,7 +307,7 @@ const PricingSection = () => {
               {availableChannels.map(channel => {
                 const IconComponent = channel.icon;
                 return (
-                  <span 
+                  <span
                     key={channel.name}
                     className="inline-flex items-center px-3 py-2 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-full text-sm"
                   >
@@ -319,7 +318,7 @@ const PricingSection = () => {
               })}
             </div>
           </div>
-          
+
           <div className="bg-zapflow-primary/10 dark:bg-zapflow-primary/5 p-8 rounded-xl border border-zapflow-primary/20 mb-12">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-2">
               ✅ Garantia Zapflow
@@ -329,7 +328,7 @@ const PricingSection = () => {
               <br />Se decidir cancelar dentro desse período, 100% do valor será estornado para o seu cartão, sem perguntas.
             </p>
           </div>
-          
+
           <div className="text-center p-8 bg-gray-50 dark:bg-gray-800/30 rounded-xl border border-gray-200 dark:border-gray-700">
             <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-4">
               ⚙️ Dúvidas? Quer ajuda para definir o melhor plano?
@@ -337,7 +336,7 @@ const PricingSection = () => {
             <p className="text-gray-700 dark:text-gray-300 mb-6">
               Fale agora com um especialista Zapflow e receba uma recomendação personalizada.
             </p>
-            <Button 
+            <Button
               variant="zapflowPrimary"
               size="lg"
               onClick={() => handleEnterprisePlanClick("Consultoria")}
@@ -349,6 +348,18 @@ const PricingSection = () => {
       </main>
       <Footer />
     </>
+  );
+};
+
+const PricingSection = () => {
+  return (
+    <Suspense fallback={
+      <div className="flex justify-center items-center min-h-screen">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-zapflow-primary"></div>
+      </div>
+    }>
+      <PricingContent />
+    </Suspense>
   );
 };
 

@@ -9,7 +9,7 @@ const PrivacyPolicy = () => {
     <>
       <Header />
       <main className="pt-28 pb-16 px-4">
-        <motion.div 
+        <motion.div
           className="container mx-auto max-w-4xl"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -18,7 +18,7 @@ const PrivacyPolicy = () => {
           <h1 className="text-3xl md:text-4xl font-bold mb-8 text-gray-900 dark:text-white">
             Política de Privacidade
           </h1>
-          
+
           <div className="prose prose-lg dark:prose-invert max-w-none">
             <p>
               Última atualização: 01 de Julho de 2023
@@ -26,7 +26,7 @@ const PrivacyPolicy = () => {
 
             <h2>1. Introdução</h2>
             <p>
-              A Zapflow ("nós", "nosso" ou "empresa") está comprometida em proteger sua privacidade. Esta Política de Privacidade explica como coletamos, usamos, compartilhamos e protegemos as informações pessoais dos usuários de nosso site e serviço Zapflow Atendimento (coletivamente, o "Serviço").
+              A Zapflow (&quot;nós&quot;, &quot;nosso&quot; ou &quot;empresa&quot;) está comprometida em proteger sua privacidade. Esta Política de Privacidade explica como coletamos, usamos, compartilhamos e protegemos as informações pessoais dos usuários de nosso site e serviço Zapflow Atendimento (coletivamente, o &quot;Serviço&quot;).
             </p>
 
             <h2>2. Informações que coletamos</h2>
